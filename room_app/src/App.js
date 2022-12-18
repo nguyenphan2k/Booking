@@ -9,6 +9,8 @@ import SignUp from './pages/SignUp';
 import Offers from './pages/Offers';
 import Forgetpassword from './pages/Forgetpassword';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 function App() {
   return (
@@ -25,6 +27,18 @@ function App() {
         </Routes>
         <Footer />
       </Router>
+      <ToastContainer
+        position='bottom-center'
+        autoClose={1000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme='dark'
+      />
     </>
   );
 }

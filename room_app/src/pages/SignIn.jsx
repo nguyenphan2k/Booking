@@ -3,6 +3,10 @@ import Photo1 from '../image/wofl.jpg'
 import { AiFillEyeInvisible, AiFillEye } from 'react-icons/ai'
 import { Link } from 'react-router-dom'
 import OAuth from '../components/OAuth'
+import {signInWithEmailAndPassword, auth, GoogleAuthProvider} from 'firebase/auth'
+import { toast } from 'react-toastify'
+import { useNavigate } from 'react-router-dom'
+import { async } from '@firebase/util'
 const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false)
   const [formData, setFormData] = useState({
@@ -15,6 +19,16 @@ const SignIn = () => {
       ...prev,
       [e.target.id]: e.target.value
     }))
+  }
+  const navigate = useNavigate()
+  async function onSubmit(e){
+    e.preventDefault()
+    try {
+      toast.success("Sign done")
+      navigate("/")
+    } catch (error) {
+      toast.error("Fail")
+    }
   }
   return (
     <section>
@@ -29,7 +43,7 @@ const SignIn = () => {
           />
         </div>
         <div className='w-full md:w-[67%] lg:w-[40%] lg:ml-20'>
-          <form>
+          <form onSubmit={onSubmit}>
             <input
               type="text"
               id='email'
