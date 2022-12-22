@@ -1,12 +1,25 @@
 import React, { useState } from 'react'
 import Photo1 from '../image/wofl.jpg'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import OAuth from '../components/OAuth'
+import { toast } from 'react-toastify'
+import { getAuth, sendPasswordResetEmail } from 'firebase/auth'
 
 const Forgetpassword = () => {
   const [email, setEmail] = useState("")
+  const navigate = useNavigate()
   function onChange(e) {
     setEmail(e.target.value)
+  }
+  async function onSubmit(e){
+    e.preventDefault()
+    try {
+      const auth = getAuth()
+      await sendPasswordResetEmail(auth, email)
+      toast.success("done")
+    } catch (error) {
+      toast.error("Fail")
+    }
   }
   return (
     <section>
@@ -21,7 +34,7 @@ const Forgetpassword = () => {
           />
         </div>
         <div className='w-full md:w-[67%] lg:w-[40%] lg:ml-20'>
-          <form>
+          <form onSubmit={onSubmit}>
             <input
               type="text"
               id='email'
@@ -48,19 +61,19 @@ const Forgetpassword = () => {
                 </Link>
               </p>
             </div>
-          </form>
-          <button
-            type='submit'
-            className='uppercase w-full bg-blue-600 text-white px-7 py-3
+            <button
+              type='submit'
+              className='uppercase w-full bg-blue-600 text-white px-7 py-3
             text-sm font-medium rounded shadow-md hover:bg-blue-700
             transition duration-150 ease-in-out hover:shadow-lg active:bg-blue-800'>
-            Send Reset email
-          </button>
-          <div className='my-4 before:border-t flex before:flex-1 items-center
+              Send Reset email
+            </button>
+            <div className='my-4 before:border-t flex before:flex-1 items-center
           before:border-gray-300 after:border-t after:flex-1 after:border-gray-300'>
-            <p className='text-center font-semibold mx-4'>OR</p>
-          </div>
-          <OAuth />
+              <p className='text-center font-semibold mx-4'>OR</p>
+            </div>
+            <OAuth />
+          </form>
         </div>
       </div>
     </section>

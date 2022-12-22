@@ -21,7 +21,7 @@ const OAuth = () => {
                     await setDoc(docRef, {
                          name: user.displayName,
                          email: user.email,
-                         timestap:serverTimestamp()
+                         timestap:serverTimestamp(),
                     })
                }
                toast.success("Sign up done")

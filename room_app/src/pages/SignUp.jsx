@@ -34,8 +34,7 @@ const SignUp = () => {
       const userCredential = await createUserWithEmailAndPassword
         (auth, email, password)
       updateProfile(auth.userCredential, {
-        displayName: name,
-
+        displayName: name
       })
       const user = userCredential.user
       const formDataCopy = { ...formData }
@@ -43,8 +42,8 @@ const SignUp = () => {
       delete formDataCopy.password
       formDataCopy.timestap = serverTimestamp()
       await setDoc(doc(db, "users", user.uid), formDataCopy)
-      // toast.success("Sign up done")
-      // navigate("/")
+      toast.success("Sign up done")
+      navigate("/")
     } catch (error) {
       toast.error("Something went wrong with the registration")
     }

@@ -1,31 +1,34 @@
 import React, { useState } from 'react'
 import Photo1 from '../image/wofl.jpg'
 import { AiFillEyeInvisible, AiFillEye } from 'react-icons/ai'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import OAuth from '../components/OAuth'
-import {signInWithEmailAndPassword, auth, GoogleAuthProvider} from 'firebase/auth'
+import { signInWithEmailAndPassword, getAuth } from 'firebase/auth'
 import { toast } from 'react-toastify'
-import { useNavigate } from 'react-router-dom'
-import { async } from '@firebase/util'
+
 const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false)
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  })
+  const [formData, setFormData] = useState
+    ({
+      email: "",
+      password: "",
+    })
   const { email, password } = formData
+  const navigate = useNavigate()
   function onChange(e) {
     setFormData((prev) => ({
       ...prev,
       [e.target.id]: e.target.value
     }))
   }
-  const navigate = useNavigate()
-  async function onSubmit(e){
+  async function onSubmit(e) {
     e.preventDefault()
     try {
-      toast.success("Sign done")
-      navigate("/")
+      const auth = getAuth()
+      const userCredentials = await signInWithEmailAndPassword(auth, email, password)
+      if (userCredentials.user) {
+        navigate("/")
+      }
     } catch (error) {
       toast.error("Fail")
     }
@@ -89,19 +92,20 @@ const SignIn = () => {
                 </Link>
               </p>
             </div>
-          </form>
-          <button
-            type='submit'
-            className='uppercase w-full bg-blue-600 text-white px-7 py-3
+            <button
+              className='uppercase w-full bg-blue-600 text-white px-7 py-3
             text-sm font-medium rounded shadow-md hover:bg-blue-700
-            transition duration-150 ease-in-out hover:shadow-lg active:bg-blue-800'>
-            Sign In
-          </button>
-          <div className='my-4 before:border-t flex before:flex-1 items-center
+            transition duration-150 ease-in-out hover:shadow-lg active:bg-blue-800'
+              type="submit"
+            >
+              Sign In
+            </button>
+            <div className='my-4 before:border-t flex before:flex-1 items-center
           before:border-gray-300 after:border-t after:flex-1 after:border-gray-300'>
-            <p className='text-center font-semibold mx-4'>OR</p>
-          </div>
-          <OAuth />
+              <p className='text-center font-semibold mx-4'>OR</p>
+            </div>
+            <OAuth />
+          </form>
         </div>
       </div>
     </section>
