@@ -10,6 +10,7 @@ import SignUp from './pages/SignUp';
 import Offers from './pages/Offers';
 import Forgetpassword from './pages/Forgetpassword';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import CreateListing from './pages/CreateListing';
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
@@ -26,6 +27,7 @@ function App() {
           <Route path='/signin' element={<SignIn />} />
           <Route path='/signup' element={<SignUp />} />
           <Route path='/offers' element={<Offers />} />
+          <Route path='/create-listing' element={<CreateListing />} />
           <Route path='/forgotpassword' element={<Forgetpassword />} />
         </Routes>
         <Footer />

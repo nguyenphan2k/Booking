@@ -24,7 +24,7 @@ const Header = () => {
   return (
     <header className='max-w-[1420px] mx-auto'>
       <div className='flex bg-slate-200 h-20 px-4 justify-between items-center 
-      shadow-sm border-b sticky top-0 z-50'>
+      shadow-sm border-b sticky top-0 z-40'>
         <div className="left_side">
           <img
             src={Photo}
