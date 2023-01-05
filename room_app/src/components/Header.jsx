@@ -23,7 +23,7 @@ const Header = () => {
   }
   return (
     <header className='max-w-[1420px] mx-auto'>
-      <div className='flex bg-slate-200 h-20 px-4 justify-between items-center 
+      <div className='flex bg-slate-500 h-20 px-4  justify-between items-center 
       shadow-sm border-b sticky top-0 z-40'>
         <div className="left_side">
           <img
@@ -34,7 +34,7 @@ const Header = () => {
           />
         </div>
         <div className='mid_side'>
-          <h1 className='uppercase text-xl font-bold text-orange-500'>
+          <h1 className='uppercase text-3xl font-medium text-black'>
             Hưng Nguyên Guest House
           </h1>
         </div>
