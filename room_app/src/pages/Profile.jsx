@@ -1,14 +1,17 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { getAuth, updateProfile } from 'firebase/auth'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { db } from '../firebase'
-import { doc, updateDoc } from 'firebase/firestore'
+import { collection, doc, getDocs, orderBy, query, updateDoc, where } from 'firebase/firestore'
 import { FcHome } from 'react-icons/fc'
+import CheckListing from '../components/CheckListing'
 
 const Profile = () => {
-  const [changeDetail, setChangeDetail] = useState(false)
   const auth = getAuth()
+  const [changeDetail, setChangeDetail] = useState(false)
+  const [listings, setListings] = useState(null);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate()
   const [formData, setFormData] = useState({
     name: auth.currentUser.displayName,
@@ -41,6 +44,28 @@ const Profile = () => {
       [e.target.id]: e.target.value
     }))
   }
+  useEffect(() => {
+    async function fetchUserListings() {
+      const listingRef = collection(db, "listings")
+      const q = query(
+        listingRef,
+        where("userRef", "==", auth.currentUser.uid),
+        orderBy("timestamp", "desc")
+      )
+      const querySnap = await getDocs(q)
+      let listings = []
+      querySnap.forEach((doc) => {
+        return listings.push({
+          id: doc.id,
+          data: doc.data(),
+        })
+      })
+      console.log(listings);
+      setListings(listings)
+      setLoading(false)
+    }
+    fetchUserListings()
+  }, [auth.currentUser.uid])
   return (
     <>
       <section className='max-w-6xl mx-auto flex justify-center items-center
@@ -105,6 +130,25 @@ const Profile = () => {
           </button>
         </div>
       </section>
+      <div>
+        {!loading && listings.length > 0 && (
+          <>
+            <h2 className="text-2xl text-center font-semibold mb-6">
+              My Listings
+            </h2>
+            <ul className='sm:grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4
+            2xl:grid-cols-5 mt-6 mb-6'>
+              {listings.map((listing) => (
+                <CheckListing
+                  key={listing.id}
+                  id={listing.id}
+                  listing={listing.data}
+                />
+              ))}
+            </ul>
+          </>
+        )}
+      </div>
     </>
   )
 }
