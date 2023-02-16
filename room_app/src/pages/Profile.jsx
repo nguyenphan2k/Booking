@@ -3,7 +3,7 @@ import { getAuth, updateProfile } from 'firebase/auth'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { db } from '../firebase'
-import { collection, doc, getDocs, orderBy, query, updateDoc, where } from 'firebase/firestore'
+import { collection, deleteDoc, doc, getDocs, orderBy, query, updateDoc, where } from 'firebase/firestore'
 import { FcHome } from 'react-icons/fc'
 import CheckListing from '../components/CheckListing'
 
@@ -37,6 +37,17 @@ const Profile = () => {
     } catch (error) {
       toast.error("fail")
     }
+  }
+  async function onDelete(listingID){
+      if(window.confirm("Are you to delete")){
+        await deleteDoc(doc(db, "listings" , listingID))
+        const updatedListings = listings.filter((listing) => listing.id !== listingID)
+        setListings(updatedListings)
+        toast.success("Done")
+      }
+  }
+  function onEdit(listingID){
+    navigate(`/edit-listing/${listingID}`)
   }
   function onChange(e) {
     setFormData((prev) => ({
@@ -143,6 +154,8 @@ const Profile = () => {
                   key={listing.id}
                   id={listing.id}
                   listing={listing.data}
+                  onDelete={() => onDelete(listing.id)}
+                  onEdit={() => onEdit(listing.id)}
                 />
               ))}
             </ul>
