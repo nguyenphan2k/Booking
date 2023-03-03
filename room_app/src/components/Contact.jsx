@@ -4,7 +4,7 @@ import { toast } from 'react-toastify'
 import { db } from '../firebase'
 
 export default function Contact({ useRef, listing }) {
-     const [landlord, setLandlord] = useState(null)
+     const [Landlord, setLandlord] = useState(null)
      useEffect(() => {
           async function getLandlord() {
                const docRef = doc(db, "users", useRef)
@@ -19,9 +19,13 @@ export default function Contact({ useRef, listing }) {
           getLandlord()
      }, [useRef])
      return (
-          <>{landlord !== null && (
+          <>{Landlord !== null && (
                <div>
-                    <p>Contact {landlord.name}</p>
+                    <p>Contact {Landlord.name} for
+                    the {listing.name.toLowerCase}</p>
+                    <div>
+                         <textarea name="message" id="message" rows="2"></textarea>
+                    </div>
                </div>
           )}</>
      )
